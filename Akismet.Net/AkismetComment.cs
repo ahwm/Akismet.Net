@@ -14,6 +14,12 @@ namespace Akismet.Net
         public string UserIp { get; set; }
 
         /// <summary>
+        /// User agent string of the web browser submitting the comment - typically the HTTP_USER_AGENT cgi variable. Not to be confused with the user agent of your Akismet library.
+        /// </summary>
+        [AkismetName("user_agent")]
+        public string UserAgent { get; set; }
+
+        /// <summary>
         /// This is an optional parameter. You can use it when submitting test queries to Akismet ("true" or "false")
         /// </summary>
         [AkismetName("is_test")]

@@ -17,6 +17,12 @@ namespace Akismet.Net
 
         private readonly RestClient client;
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="apiKey"></param>
+        /// <param name="blogUrl"></param>
+        /// <param name="applicationName"></param>
         public AkismetClient(string apiKey, Uri blogUrl, string applicationName)
         {
             this.apiKey = apiKey;
