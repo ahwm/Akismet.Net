@@ -41,6 +41,14 @@ AkismetComment comment = new AkismetComment
 
 var akismetResult = akismet.Check(comment);
 bool isSpam = akismetResult.SpamStatus == SpamStatus.Spam; // Options: Ham, Spam, Unspecified (in the case of an error)
+
+// "invalid" and/or combination of X-akismet-alert-code and X-akismet-alert-msg header values
+foreach (string err in akismetResult.Errors)
+    Console.WriteLine(err);
+    
+// Other properties:
+//    - ProTip (X-akismet-pro-tip header value, if present)
+//    - DebugHelp (X-akismet-debug-help header value, if present)
 ```
 
 If `HoneypotFieldName` and `HoneypotFieldValue` are supplied then the library will add these two values to the request:
