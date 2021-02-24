@@ -54,7 +54,12 @@ namespace Akismet.Net
         /// <returns></returns>
         public bool VerifyKey()
         {
-            return VerifyKeyAsync().Result;
+            var req = new RestRequest("verify-key", Method.POST)
+                .AddParameter("key", apiKey)
+                .AddParameter("blog", blogUrl);
+            var resp = client.Execute(req);
+
+            return resp.Content == "valid";
         }
 
         /// <summary>
@@ -101,7 +106,34 @@ namespace Akismet.Net
         /// <returns></returns>
         public AkismetResponse Check(AkismetComment comment)
         {
-            return CheckAsync(comment).Result;
+            var req = new RestRequest("comment-check", Method.POST)
+               .AddParameter("key", apiKey)
+               .AddParameter("blog", blogUrl);
+
+            var attributes = AttributeHelper.GetAttributes(comment);
+            foreach (var kv in attributes)
+                req.AddParameter(kv.Key, kv.Value);
+
+            var resp = client.Execute(req);
+
+            AkismetResponse response = new AkismetResponse();
+
+            if (!Boolean.TryParse(resp.Content, out bool result))
+            {
+                response.AkismetErrors.Add(resp.Content);
+                response.SpamStatus = SpamStatus.Unspecified;
+            }
+            else
+                response.SpamStatus = result ? SpamStatus.Spam : SpamStatus.Ham;
+
+            if (resp.Headers.Any(r => r.Name.ToLower() == "x-akismet-debug-help"))
+                response.AkismetDebugHelp = resp.Headers.Where(r => r.Name.ToLower() == "x-akismet-debug-help").First().Value.ToString();
+            if (resp.Headers.Any(r => r.Name.ToLower() == "x-akismet-pro-tip"))
+                response.ProTip = resp.Headers.Where(r => r.Name.ToLower() == "x-akismet-pro-tip").First().Value.ToString();
+            if (resp.Headers.Any(r => r.Name.ToLower() == "x-akismet-alert-code"))
+                response.AkismetErrors.Add(resp.Headers.Where(r => r.Name.ToLower() == "x-akismet-alert-code").First().Value.ToString() + ": " + resp.Headers.Where(r => r.Name.ToLower() == "x-akismet-alert-msg").First().Value.ToString());
+
+            return response;
         }
 
         /// <summary>
@@ -148,7 +180,34 @@ namespace Akismet.Net
         /// <returns></returns>
         public AkismetResponse SubmitSpam(AkismetComment comment)
         {
-            return SubmitSpamAsync(comment).Result;
+            var req = new RestRequest("submit-spam", Method.POST)
+                .AddParameter("key", apiKey)
+                .AddParameter("blog", blogUrl);
+
+            var attributes = AttributeHelper.GetAttributes(comment);
+            foreach (var kv in attributes)
+                req.AddParameter(kv.Key, kv.Value);
+
+            var resp = client.Execute(req);
+
+            AkismetResponse response = new AkismetResponse();
+
+            if (!Boolean.TryParse(resp.Content, out bool result))
+            {
+                response.AkismetErrors.Add(resp.Content);
+                response.SpamStatus = SpamStatus.Unspecified;
+            }
+            else
+                response.SpamStatus = result ? SpamStatus.Spam : SpamStatus.Ham;
+
+            if (resp.Headers.Any(r => r.Name.ToLower() == "x-akismet-debug-help"))
+                response.AkismetDebugHelp = resp.Headers.Where(r => r.Name.ToLower() == "x-akismet-debug-help").First().Value.ToString();
+            if (resp.Headers.Any(r => r.Name.ToLower() == "x-akismet-pro-tip"))
+                response.ProTip = resp.Headers.Where(r => r.Name.ToLower() == "x-akismet-pro-tip").First().Value.ToString();
+            if (resp.Headers.Any(r => r.Name.ToLower() == "x-akismet-alert-code"))
+                response.AkismetErrors.Add(resp.Headers.Where(r => r.Name.ToLower() == "x-akismet-alert-code").First().Value.ToString() + ": " + resp.Headers.Where(r => r.Name.ToLower() == "x-akismet-alert-msg").First().Value.ToString());
+
+            return response;
         }
 
         /// <summary>
@@ -195,7 +254,34 @@ namespace Akismet.Net
         /// <returns></returns>
         public AkismetResponse SubmitHam(AkismetComment comment)
         {
-            return SubmitHamAsync(comment).Result;
+            var req = new RestRequest("submit-ham", Method.POST)
+                .AddParameter("key", apiKey)
+                .AddParameter("blog", blogUrl);
+
+            var attributes = AttributeHelper.GetAttributes(comment);
+            foreach (var kv in attributes)
+                req.AddParameter(kv.Key, kv.Value);
+
+            var resp = client.Execute(req);
+
+            AkismetResponse response = new AkismetResponse();
+
+            if (!Boolean.TryParse(resp.Content, out bool result))
+            {
+                response.AkismetErrors.Add(resp.Content);
+                response.SpamStatus = SpamStatus.Unspecified;
+            }
+            else
+                response.SpamStatus = result ? SpamStatus.Spam : SpamStatus.Ham;
+
+            if (resp.Headers.Any(r => r.Name.ToLower() == "x-akismet-debug-help"))
+                response.AkismetDebugHelp = resp.Headers.Where(r => r.Name.ToLower() == "x-akismet-debug-help").First().Value.ToString();
+            if (resp.Headers.Any(r => r.Name.ToLower() == "x-akismet-pro-tip"))
+                response.ProTip = resp.Headers.Where(r => r.Name.ToLower() == "x-akismet-pro-tip").First().Value.ToString();
+            if (resp.Headers.Any(r => r.Name.ToLower() == "x-akismet-alert-code"))
+                response.AkismetErrors.Add(resp.Headers.Where(r => r.Name.ToLower() == "x-akismet-alert-code").First().Value.ToString() + ": " + resp.Headers.Where(r => r.Name.ToLower() == "x-akismet-alert-msg").First().Value.ToString());
+
+            return response;
         }
     }
 }
