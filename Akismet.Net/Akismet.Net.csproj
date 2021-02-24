@@ -11,9 +11,9 @@
     <TargetFrameworks>netcoreapp2.1;netcoreapp3.1;net452;net5.0;netstandard2.0</TargetFrameworks>
     <Copyright>(c) 2021 Adam Humpherys</Copyright>
     <PackageTags>akismet spam antispam</PackageTags>
-    <PackageReleaseNotes>Fixed missing User Agent property</PackageReleaseNotes>
+    <PackageReleaseNotes>Bugfix</PackageReleaseNotes>
     <PackageId>AkismetApi.Net</PackageId>
-    <Version>1.0.0.1</Version>
+    <Version>1.0.0.2</Version>
   </PropertyGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp2.1'">
@@ -61,7 +61,7 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
   
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+  <PropertyGroup Condition="'$(Configuration)'=='Release'">
     <DocumentationFile>Akismet.Net.xml</DocumentationFile>
   </PropertyGroup>
 

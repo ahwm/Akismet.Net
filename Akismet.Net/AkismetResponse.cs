@@ -21,7 +21,7 @@ namespace Akismet.Net
         /// <summary>
         /// Errors if any
         /// </summary>
-        public List<string> AkismetErrors { get; set; }
+        public List<string> AkismetErrors { get; } = new List<string>();
 
         /// <summary>
         /// Value of X-akismet-debug-help header, if present
