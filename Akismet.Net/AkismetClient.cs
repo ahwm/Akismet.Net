@@ -1,6 +1,7 @@
 ﻿using Akismet.Net.Helpers;
 using RestSharp;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -70,7 +71,6 @@ namespace Akismet.Net
         public async Task<AkismetResponse> CheckAsync(AkismetComment comment)
         {
             var req = new RestRequest("comment-check", Method.POST)
-                .AddParameter("key", apiKey)
                 .AddParameter("blog", blogUrl);
 
             var attributes = AttributeHelper.GetAttributes(comment);
@@ -107,7 +107,6 @@ namespace Akismet.Net
         public AkismetResponse Check(AkismetComment comment)
         {
             var req = new RestRequest("comment-check", Method.POST)
-               .AddParameter("key", apiKey)
                .AddParameter("blog", blogUrl);
 
             var attributes = AttributeHelper.GetAttributes(comment);
@@ -144,7 +143,6 @@ namespace Akismet.Net
         public async Task<AkismetResponse> SubmitSpamAsync(AkismetComment comment)
         {
             var req = new RestRequest("submit-spam", Method.POST)
-                .AddParameter("key", apiKey)
                 .AddParameter("blog", blogUrl);
 
             var attributes = AttributeHelper.GetAttributes(comment);
@@ -181,7 +179,6 @@ namespace Akismet.Net
         public AkismetResponse SubmitSpam(AkismetComment comment)
         {
             var req = new RestRequest("submit-spam", Method.POST)
-                .AddParameter("key", apiKey)
                 .AddParameter("blog", blogUrl);
 
             var attributes = AttributeHelper.GetAttributes(comment);
@@ -218,7 +215,6 @@ namespace Akismet.Net
         public async Task<AkismetResponse> SubmitHamAsync(AkismetComment comment)
         {
             var req = new RestRequest("submit-ham", Method.POST)
-                .AddParameter("key", apiKey)
                 .AddParameter("blog", blogUrl);
 
             var attributes = AttributeHelper.GetAttributes(comment);
@@ -255,7 +251,6 @@ namespace Akismet.Net
         public AkismetResponse SubmitHam(AkismetComment comment)
         {
             var req = new RestRequest("submit-ham", Method.POST)
-                .AddParameter("key", apiKey)
                 .AddParameter("blog", blogUrl);
 
             var attributes = AttributeHelper.GetAttributes(comment);
@@ -282,6 +277,72 @@ namespace Akismet.Net
                 response.AkismetErrors.Add(resp.Headers.Where(r => r.Name.ToLower() == "x-akismet-alert-code").First().Value.ToString() + ": " + resp.Headers.Where(r => r.Name.ToLower() == "x-akismet-alert-msg").First().Value.ToString());
 
             return response;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public async Task<AkismetAccount> GetAccountStatusAsync()
+        {
+            var req = new RestRequest("get-subscription", Method.POST)
+                .AddParameter("key", apiKey)
+                .AddParameter("blog", blogUrl);
+
+            var resp = await client.ExecuteAsync<AkismetAccount>(req);
+
+            return resp.Data;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public AkismetAccount GetAccountStatus()
+        {
+            var req = new RestRequest("get-subscription", Method.POST)
+                .AddParameter("key", apiKey)
+                .AddParameter("blog", blogUrl);
+
+            var resp = client.Execute<AkismetAccount>(req);
+
+            return resp.Data;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public async Task<RestResponse> CustomCallAsync(string command, Dictionary<string, string> attributes)
+        {
+            var req = new RestRequest(command, Method.POST)
+                .AddParameter("key", apiKey)
+                .AddParameter("blog", blogUrl);
+
+            foreach (var kv in attributes)
+                req.AddParameter(kv.Key, kv.Value);
+
+            RestResponse resp = (RestResponse)await client.ExecuteAsync(req);
+
+            return resp;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public RestResponse CustomCall(string command, Dictionary<string, string> attributes)
+        {
+            var req = new RestRequest(command, Method.POST)
+                .AddParameter("key", apiKey)
+                .AddParameter("blog", blogUrl);
+
+            foreach (var kv in attributes)
+                req.AddParameter(kv.Key, kv.Value);
+
+            RestResponse resp = (RestResponse)client.Execute(req);
+
+            return resp;
         }
     }
 }
