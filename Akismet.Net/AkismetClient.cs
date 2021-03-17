@@ -1,4 +1,5 @@
 ﻿using Akismet.Net.Helpers;
+using Newtonsoft.Json;
 using RestSharp;
 using System;
 using System.Collections.Generic;
@@ -31,7 +32,7 @@ namespace Akismet.Net
 
             client = new RestClient($"https://{apiKey}.rest.akismet.com/1.1")
             {
-                UserAgent = $"{applicationName} | Akismet.NET/{Assembly.GetExecutingAssembly().GetName().Version}",
+                UserAgent = $"{applicationName} | Akismet.NET/{Assembly.GetExecutingAssembly().GetName().Version} (https://github.com/ahwm/Akismet.Net)",
             };
         }
 
@@ -289,9 +290,21 @@ namespace Akismet.Net
                 .AddParameter("key", apiKey)
                 .AddParameter("blog", blogUrl);
 
-            var resp = await client.ExecuteAsync<AkismetAccount>(req);
+            var resp = await client.ExecuteAsync(req);
+            dynamic data = JsonConvert.DeserializeObject(resp.Content);
 
-            return resp.Data;
+            AkismetAccount account = new AkismetAccount
+            {
+                AccountId = (int)data["account_id"],
+                AccountName = (string)data["account_name"],
+                AccountType = (string)data["account_type"],
+                Status = (string)data["status"],
+                LimitReached = (bool)data["limit_reached"]
+            };
+            if (!(data["next_billing_date"] is bool))
+                account.NextBillingDate = DateTimeHelper.UnixTimeStampToDateTime(Convert.ToInt32(data["next_billing_date"]));
+
+            return account;
         }
 
         /// <summary>
@@ -304,9 +317,81 @@ namespace Akismet.Net
                 .AddParameter("key", apiKey)
                 .AddParameter("blog", blogUrl);
 
-            var resp = client.Execute<AkismetAccount>(req);
+            var resp = client.Execute(req);
+            dynamic data = JsonConvert.DeserializeObject(resp.Content);
+
+            AkismetAccount account = new AkismetAccount
+            {
+                AccountId = (int)data["account_id"],
+                AccountName = (string)data["account_name"],
+                AccountType = (string)data["account_type"],
+                Status = (string)data["status"],
+                LimitReached = (bool)data["limit_reached"]
+            };
+            if (!(data["next_billing_date"] is bool))
+                account.NextBillingDate = DateTimeHelper.UnixTimeStampToDateTime(Convert.ToInt32(data["next_billing_date"]));
+
+            return account;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public async Task<SpamStats> GetStatisticsAsync()
+        {
+            var req = new RestRequest("get-stats", Method.POST)
+                .AddParameter("key", apiKey)
+                .AddParameter("blog", blogUrl);
+
+            var resp = await client.ExecuteAsync<SpamStats>(req);
 
             return resp.Data;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public SpamStats GetStatistics()
+        {
+            var req = new RestRequest("get-stats", Method.POST)
+                .AddParameter("key", apiKey)
+                .AddParameter("blog", blogUrl);
+
+            var resp = client.Execute<SpamStats>(req);
+
+            return resp.Data;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public async Task<string> DecativateAsync()
+        {
+            var req = new RestRequest("deactivate", Method.POST)
+                .AddParameter("key", apiKey)
+                .AddParameter("blog", blogUrl);
+
+            var resp = await client.ExecuteAsync(req);
+
+            return resp.Content;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public string Deactivate()
+        {
+            var req = new RestRequest("deactivate", Method.POST)
+                .AddParameter("key", apiKey)
+                .AddParameter("blog", blogUrl);
+
+            var resp = client.Execute(req);
+
+            return resp.Content;
         }
 
         /// <summary>

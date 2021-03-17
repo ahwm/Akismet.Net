@@ -27,6 +27,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <Reference Condition="'$(TargetFramework)' == 'net452'" Include="Microsoft.CSharp"/>
   </ItemGroup>
 
   <PropertyGroup>
