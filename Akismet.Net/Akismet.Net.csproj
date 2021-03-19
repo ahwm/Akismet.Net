@@ -11,9 +11,9 @@
     <TargetFrameworks>netcoreapp2.1;netcoreapp3.1;net452;net5.0;netstandard2.0</TargetFrameworks>
     <Copyright>(c) 2021 Adam Humpherys</Copyright>
     <PackageTags>akismet spam antispam</PackageTags>
-    <PackageReleaseNotes>Fixing hang on some MVC-based web applications</PackageReleaseNotes>
+    <PackageReleaseNotes>Adding calls for account status and statistics</PackageReleaseNotes>
     <PackageId>AkismetApi.Net</PackageId>
-    <Version>1.0.0.3</Version>
+    <Version>1.1</Version>
   </PropertyGroup>
   
   <ItemGroup>
@@ -27,7 +27,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <Reference Condition="'$(TargetFramework)' == 'net452'" Include="Microsoft.CSharp"/>
+    <Reference Condition="'$(TargetFramework)' == 'net452'" Include="Microsoft.CSharp" />
   </ItemGroup>
 
   <PropertyGroup>
