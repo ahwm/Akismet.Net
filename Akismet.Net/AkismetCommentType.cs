@@ -50,18 +50,15 @@ namespace Akismet.Net
         /// Specify a comment type
         /// </summary>
         /// <param name="type"></param>
-        public AkismentCommentType(string type)
-        {
-            CommentType = type;
-        }
+        public AkismentCommentType(string type) => CommentType = type;
 
         /// <summary>
         /// Returns string representation of the comment type
         /// </summary>
         /// <returns></returns>
-        public override string ToString()
-        {
-            return CommentType;
-        }
+        public override string ToString() => CommentType;
+
+        public static implicit operator string(AkismentCommentType t) => t.CommentType;
+        public static implicit operator AkismentCommentType(string t) => new AkismentCommentType(t);
     }
 }
