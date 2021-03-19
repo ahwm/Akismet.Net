@@ -7,9 +7,9 @@ namespace Akismet.Net
     /// <summary>
     /// Akismet comment type
     /// </summary>
-    public sealed class AkismentCommentType
+    public struct AkismentCommentType
     {
-        internal readonly string CommentType;
+        internal string CommentType { get; }
 
         /// <summary>
         /// A blog comment
