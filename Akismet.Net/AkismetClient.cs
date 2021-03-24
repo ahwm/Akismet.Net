@@ -344,9 +344,10 @@ namespace Akismet.Net
                 .AddParameter("key", apiKey)
                 .AddParameter("blog", blogUrl);
 
-            var resp = await client.ExecuteAsync<SpamStats>(req);
+            var resp = await client.ExecuteAsync(req);
+            var data = JsonConvert.DeserializeObject<SpamStats>(resp.Content);
 
-            return resp.Data;
+            return data;
         }
 
         /// <summary>
@@ -359,9 +360,10 @@ namespace Akismet.Net
                 .AddParameter("key", apiKey)
                 .AddParameter("blog", blogUrl);
 
-            var resp = client.Execute<SpamStats>(req);
+            var resp = client.Execute(req);
+            var data = JsonConvert.DeserializeObject<SpamStats>(resp.Content);
 
-            return resp.Data;
+            return data;
         }
 
         /// <summary>

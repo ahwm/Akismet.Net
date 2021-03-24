@@ -29,10 +29,22 @@ namespace Akismet.Net
         public string AkismetDebugHelp { get; set; }
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
     public enum SpamStatus
     {
+        /// <summary>
+        /// 
+        /// </summary>
         Spam,
+        /// <summary>
+        /// 
+        /// </summary>
         Ham,
+        /// <summary>
+        /// 
+        /// </summary>
         Unspecified
     }
 }

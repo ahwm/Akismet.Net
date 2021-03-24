@@ -1,4 +1,6 @@
 ﻿using Akismet.Net.Attributes;
+using Akismet.Net.Helpers;
+using Newtonsoft.Json;
 
 namespace Akismet.Net
 {
@@ -113,5 +115,13 @@ namespace Akismet.Net
         /// Value of honeypot field
         /// </summary>
         public string HoneypotFieldValue { get; set; }
+
+        /// <inheritdoc/>
+        public override string ToString()
+        {
+            var attributes = AttributeHelper.GetAttributes(this);
+
+            return JsonConvert.SerializeObject(attributes);
+        }
     }
 }

@@ -58,7 +58,9 @@ namespace Akismet.Net
         /// <returns></returns>
         public override string ToString() => CommentType;
 
+        /// <inheritdoc/>
         public static implicit operator string(AkismentCommentType t) => t.CommentType;
+        /// <inheritdoc/>
         public static implicit operator AkismentCommentType(string t) => new AkismentCommentType(t);
     }
 }
