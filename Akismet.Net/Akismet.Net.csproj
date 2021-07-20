@@ -11,9 +11,9 @@
     <TargetFrameworks>netcoreapp2.1;netcoreapp3.1;net452;net5.0;netstandard2.0</TargetFrameworks>
     <Copyright>(c) 2021 Adam Humpherys</Copyright>
     <PackageTags>akismet spam antispam</PackageTags>
-    <PackageReleaseNotes>Fixed bug in statistics</PackageReleaseNotes>
+    <PackageReleaseNotes>RestSharp security update</PackageReleaseNotes>
     <PackageId>AkismetApi.Net</PackageId>
-    <Version>1.1.1</Version>
+    <Version>1.1.2</Version>
   </PropertyGroup>
   
   <ItemGroup>
