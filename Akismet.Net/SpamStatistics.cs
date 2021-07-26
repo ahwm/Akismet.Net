@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -22,11 +23,13 @@ namespace Akismet.Net
         /// <summary>
         /// 
         /// </summary>
+        [JsonProperty("missed_spam")]
         public long MissedSpam { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
+        [JsonProperty("false_positives")]
         public long FalsePositives { get; set; }
 
         /// <summary>
@@ -63,11 +66,13 @@ namespace Akismet.Net
         /// <summary>
         /// 
         /// </summary>
+        [JsonProperty("missed_spam")]
         public long MissedSpam { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
+        [JsonProperty("false_positives")]
         public long FalsePositives { get; set; }
 
         /// <summary>
