@@ -1,6 +1,7 @@
 ﻿using Akismet.Net.Attributes;
 using Akismet.Net.Helpers;
 using Newtonsoft.Json;
+using System;
 
 namespace Akismet.Net
 {
@@ -31,6 +32,7 @@ namespace Akismet.Net
         /// A string that describes the type of content being sent
         /// </summary>
         [AkismetName("comment_type")]
+        [JsonConverter(typeof(CommentTypeConverter))]
         public AkismentCommentType CommentType { get; set; }
 
         /// <summary>
@@ -122,6 +124,27 @@ namespace Akismet.Net
             var attributes = AttributeHelper.GetAttributes(this);
 
             return JsonConvert.SerializeObject(attributes);
+        }
+    }
+
+    public class CommentTypeConverter : JsonConverter
+    {
+        public override bool CanConvert(Type objectType)
+        {
+            return objectType == typeof(AkismentCommentType);
+        }
+
+        public override bool CanRead => false;
+
+        public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
+        {
+            string commentType = (AkismentCommentType)value;
+            writer.WriteValue(commentType);
         }
     }
 }

@@ -45,6 +45,7 @@ namespace Akismet.Net
         /// <summary>
         /// 
         /// </summary>
+        [JsonProperty("time_saved")]
         public long TimeSaved { get; set; }
     }
 
