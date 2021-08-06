@@ -11,9 +11,9 @@
     <TargetFrameworks>netcoreapp2.1;netcoreapp3.1;net452;net5.0;netstandard2.0</TargetFrameworks>
     <Copyright>(c) 2021 Adam Humpherys</Copyright>
     <PackageTags>akismet spam antispam</PackageTags>
-    <PackageReleaseNotes>Fixed "time saved" property in advanced statistics; improved serialization of CommentType field</PackageReleaseNotes>
+    <PackageReleaseNotes>Added "interval" parameter to GetStats</PackageReleaseNotes>
     <PackageId>AkismetApi.Net</PackageId>
-    <Version>1.1.4</Version>
+    <Version>1.1.5</Version>
   </PropertyGroup>
   
   <ItemGroup>

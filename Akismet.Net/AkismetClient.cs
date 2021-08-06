@@ -16,6 +16,7 @@ namespace Akismet.Net
     {
         private readonly string blogUrl;
         private readonly string apiKey;
+        private readonly string[] allowedIntervals = new[] { "60-days", "6-months", "all" };
 
         private readonly RestClient client;
 
@@ -337,12 +338,19 @@ namespace Akismet.Net
         /// <summary>
         /// 
         /// </summary>
+        /// <param name="interval">Allowed options: 60-days, 6-months, all</param>
         /// <returns></returns>
-        public async Task<SpamStats> GetStatisticsAsync()
+        public async Task<SpamStats> GetStatisticsAsync(string interval = "")
         {
+            if (!String.IsNullOrWhiteSpace(interval) && !allowedIntervals.Contains(interval))
+                throw new ArgumentException("Invalid interval", nameof(interval));
+
             var req = new RestRequest("get-stats", Method.POST)
                 .AddParameter("key", apiKey)
                 .AddParameter("blog", blogUrl);
+
+            if (!String.IsNullOrWhiteSpace(interval))
+                req.AddParameter("from", interval);
 
             var resp = await client.ExecuteAsync(req);
             var data = JsonConvert.DeserializeObject<SpamStats>(resp.Content);
@@ -353,12 +361,19 @@ namespace Akismet.Net
         /// <summary>
         /// 
         /// </summary>
+        /// <param name="interval">Allowed options: 60-days, 6-months, all</param>
         /// <returns></returns>
-        public SpamStats GetStatistics()
+        public SpamStats GetStatistics(string interval = "")
         {
+            if (!String.IsNullOrWhiteSpace(interval) && !allowedIntervals.Contains(interval))
+                throw new ArgumentException("Invalid interval", nameof(interval));
+
             var req = new RestRequest("get-stats", Method.POST)
                 .AddParameter("key", apiKey)
                 .AddParameter("blog", blogUrl);
+
+            if (!String.IsNullOrWhiteSpace(interval))
+                req.AddParameter("from", interval);
 
             var resp = client.Execute(req);
             var data = JsonConvert.DeserializeObject<SpamStats>(resp.Content);
