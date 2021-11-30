@@ -127,20 +127,46 @@ namespace Akismet.Net
         }
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
     public class CommentTypeConverter : JsonConverter
     {
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="objectType"></param>
+        /// <returns></returns>
         public override bool CanConvert(Type objectType)
         {
             return objectType == typeof(AkismentCommentType);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public override bool CanRead => false;
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="reader"></param>
+        /// <param name="objectType"></param>
+        /// <param name="existingValue"></param>
+        /// <param name="serializer"></param>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
             throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="writer"></param>
+        /// <param name="value"></param>
+        /// <param name="serializer"></param>
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
             string commentType = (AkismentCommentType)value;
