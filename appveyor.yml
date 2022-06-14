@@ -1,6 +1,11 @@
 version: 2.0.0.{build}
 image: Visual Studio 2022
 configuration: Release
+environment:
+  AKISMET_API_KEY:
+    secure: 6UGrjZWtUhsSK42Esp2yNA==
+  AKISMET_API_KEY_URL:
+    secure: https://www.adamh.us
 before_build:
 - ps: >-
     dotnet restore

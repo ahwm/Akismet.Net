@@ -1,9 +1,14 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.31005.135
+# Visual Studio Version 17
+VisualStudioVersion = 17.2.32526.322
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Akismet.Net", "Akismet.Net\Akismet.Net.csproj", "{508EF0F6-3097-4B8B-B6E5-A725B12C030A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Akismet.Net", "Akismet.Net\Akismet.Net.csproj", "{508EF0F6-3097-4B8B-B6E5-A725B12C030A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Akismet.Tests", "Akismet.Tests\Akismet.Tests.csproj", "{09EB5E26-44CD-46DC-BCE5-1AF790195342}"
+	ProjectSection(ProjectDependencies) = postProject
+		{508EF0F6-3097-4B8B-B6E5-A725B12C030A} = {508EF0F6-3097-4B8B-B6E5-A725B12C030A}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +20,10 @@ Global
 		{508EF0F6-3097-4B8B-B6E5-A725B12C030A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{508EF0F6-3097-4B8B-B6E5-A725B12C030A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{508EF0F6-3097-4B8B-B6E5-A725B12C030A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{09EB5E26-44CD-46DC-BCE5-1AF790195342}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{09EB5E26-44CD-46DC-BCE5-1AF790195342}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{09EB5E26-44CD-46DC-BCE5-1AF790195342}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{09EB5E26-44CD-46DC-BCE5-1AF790195342}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
