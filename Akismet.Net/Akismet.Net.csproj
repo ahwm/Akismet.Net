@@ -8,13 +8,13 @@
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/ahwm/Akismet.Net</PackageProjectUrl>
     <RepositoryUrl>https://github.com/ahwm/Akismet.Net</RepositoryUrl>
-    <TargetFrameworks>net452;net5.0;net6.0;netstandard2.0;net7.0</TargetFrameworks>
+    <TargetFrameworks>net452;net6.0;netstandard2.0;net7.0</TargetFrameworks>
     <Copyright>(c) 2021 Adam Humpherys</Copyright>
     <PackageTags>akismet spam antispam</PackageTags>
     <PackageReleaseNotes>Dropped explicit support for .NET Core 3.1 and .NET 5 and added support for .NET 7</PackageReleaseNotes>
     <PackageId>AkismetApi.Net</PackageId>
-    <Version>3.0.0</Version>
-	<AssemblyFileVersion>3.0.0.0</AssemblyFileVersion>
+    <Version>3.0.0.1</Version>
+	  <AssemblyFileVersion>3.0.0.0</AssemblyFileVersion>
     <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
   
