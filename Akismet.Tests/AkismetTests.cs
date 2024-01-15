@@ -18,8 +18,8 @@ namespace Akismet.Tests
 
         public AkismetTests()
         {
-            ApiKey = Environment.GetEnvironmentVariable("AKISMET_API_KEY");
-            ApiKeyUrl = Environment.GetEnvironmentVariable("AKISMET_API_KEY_URL");
+            ApiKey = Environment.GetEnvironmentVariable("AKISMET_API_KEY").Trim();
+            ApiKeyUrl = Environment.GetEnvironmentVariable("AKISMET_API_KEY_URL").Trim();
 
             Client = new AkismetClient(ApiKey, new Uri(ApiKeyUrl), "Akismet Test Application");
         }
