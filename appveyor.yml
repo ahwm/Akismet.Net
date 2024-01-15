@@ -7,8 +7,6 @@ environment:
   AKISMET_API_KEY_URL: https://www.adamh.us
 before_build:
 - ps: >-
-    echo $env:AKISMET_API_KEY_URL
-    
     dotnet restore
 build:
   verbosity: minimal
