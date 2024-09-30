@@ -5,7 +5,7 @@ Existing libraries don't allow for all of the possible options available in the 
 
 It is also multi-targeted to support as many applications as possible.
 
-[![NuGet Status](https://buildstats.info/nuget/AkismetApi.Net)](https://www.nuget.org/packages/AkismetApi.Net/)
+[![NuGet Status](https://img.shields.io/nuget/vpre/AkismetApi.Net)](https://www.nuget.org/packages/AkismetApi.Net/)
 
 Meant to be a drop-in replacement for the leading Akismet library with minimal changes so the class names are the same. However some properties have been removed because of redundancy.
 
