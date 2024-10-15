@@ -16,5 +16,5 @@ artifacts:
 deploy:
 - provider: NuGet
   api_key:
-    secure: LsY29DHn1PDAZnEuO//RKqEgEJFgd6Rpfel8obzS/8wuMOfzlZgJg5+baot5uyoE
+    secure: PZ96+4psSOrS2xFAX+Ir1F1+4MQhGlO9Pq2J8oAA2LDFh+6QCqKPxnOztka9I8pv
   artifact: /AkismetApi.Net\.(.*)\.nupkg/
