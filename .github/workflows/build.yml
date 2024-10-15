@@ -24,6 +24,7 @@ jobs:
       - name: Build
         run: dotnet build
       - name: Test
+        if: ${{ github.ref == 'refs/heads/main' && github.event_name != 'pull_request' }}
         env:
           AKISMET_API_KEY: ${{ secrets.AKISMET_API_KEY }}
           AKISMET_API_KEY_URL: ${{ vars.AKISMET_API_KEY_URL }}
