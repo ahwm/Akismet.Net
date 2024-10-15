@@ -24,4 +24,7 @@ jobs:
       - name: Build
         run: dotnet build
       - name: Test
+        env:
+          AKISMET_API_KEY: ${{ secrets.AKISMET_API_KEY }}
+          AKISMET_API_KEY_URL: ${{ vars.AKISMET_API_KEY_URL }}
         run: dotnet test --no-build --verbosity normal
