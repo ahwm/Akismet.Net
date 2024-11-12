@@ -1,4 +1,5 @@
 # Akismet.Net
+
 Complete and full-featured Akismet client for .NET
 
 Existing libraries don't allow for all of the possible options available in the Akismet API and the source code is not public. This library is meant to fix that.
@@ -9,7 +10,9 @@ It is also multi-targeted to support as many applications as possible.
 
 Meant to be a drop-in replacement for the leading Akismet library with minimal changes so the class names are the same. However some properties have been removed because of redundancy.
 
-Example usage:
+## Example usage:
+
+### .NET Framework
 
 ```csharp
 var model = new ContactModel();
@@ -31,8 +34,8 @@ AkismetComment comment = new AkismetComment
     IsTest = "false",
     BlogCharset = "UTF-8",
     BlogLanguage = "en-US",
-    CommentDate = DateTime.UtcNow.ToString("s"), // ISO-8601 format
-    CommentPostModified = DateTime.UtcNow.ToString("s"), // ISO-8601 format
+    CommentDate = DateTime.UtcNow.ToString("O"), // ISO-8601 format
+    CommentPostModified = DateTime.UtcNow.ToString("O"), // ISO-8601 format
     UserRole = "administrator",
     RecheckReason = "edit",
     HoneypotFieldName = "honeypot",
@@ -50,6 +53,22 @@ foreach (string err in akismetResult.Errors)
 //    - ProTip (X-akismet-pro-tip header value, if present)
 //    - DebugHelp (X-akismet-debug-help header value, if present)
 ```
+
+### .NET Core/.NET 5+ Usage Modifications
+
+```csharp
+string ip = Request.Headers["CF-Connecting-IP"].ToString() ?? _contextAccessor.HttpContext?.Connection.RemoteIpAddress?.ToString() ?? "";
+if (String.IsNullOrWhiteSpace(ip))
+    ip = _contextAccessor.HttpContext?.GetServerVariable("REMOTE_HOST") ?? "";
+AkismetComment comment = new AkismetComment
+{
+    // ... other properties set as above
+    UserAgent = Request.Headers[HeaderNames.UserAgent],
+    Referrer = Request.Headers[HeaderNames.Referer]
+};
+```
+
+### Notes
 
 If `HoneypotFieldName` and `HoneypotFieldValue` are supplied then the library will add these two values to the request:
 
