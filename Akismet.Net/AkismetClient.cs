@@ -1,9 +1,9 @@
 ﻿using Akismet.Net.Helpers;
-using Newtonsoft.Json;
-using RestSharp;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Reflection;
 using System.Threading.Tasks;
 
@@ -18,7 +18,7 @@ namespace Akismet.Net
         private readonly string apiKey;
         private readonly string[] allowedIntervals = new[] { "60-days", "6-months", "all" };
 
-        private readonly RestClient client;
+        private readonly HttpClient client;
 
         /// <summary>
         /// 
@@ -31,10 +31,11 @@ namespace Akismet.Net
             this.apiKey = apiKey;
             this.blogUrl = blogUrl?.ToString() ?? throw new ArgumentNullException("blogUrl");
 
-            client = new RestClient($"https://{apiKey}.rest.akismet.com/1.1")
+            client = new HttpClient()
             {
-                UserAgent = $"{applicationName} | Akismet.NET/{Assembly.GetExecutingAssembly().GetName().Version} (https://github.com/ahwm/Akismet.Net)",
+                BaseAddress = new Uri($"https://{apiKey}.rest.akismet.com/1.1"),
             };
+            client.DefaultRequestHeaders.UserAgent.Add(new ProductInfoHeaderValue($"{applicationName} | Akismet.NET/{Assembly.GetExecutingAssembly().GetName().Version} (https://github.com/ahwm/Akismet.Net)"));
         }
 
         /// <summary>
@@ -43,12 +44,14 @@ namespace Akismet.Net
         /// <returns></returns>
         public async Task<bool> VerifyKeyAsync()
         {
-            var req = new RestRequest("verify-key", Method.POST)
-                .AddParameter("key", apiKey)
-                .AddParameter("blog", blogUrl);
-            var resp = await client.ExecuteAsync(req);
+            var formData = new FormUrlEncodedContent(new List<KeyValuePair<string, string>>
+            {
+                new KeyValuePair<string, string>("key", apiKey),
+                new KeyValuePair<string, string>("blog", blogUrl)
+            });
+            var resp = await client.PostAsync("verify-key", formData);
 
-            return resp.Content == "valid";
+            return await resp.Content.ReadAsStringAsync() == "valid";
         }
 
         /// <summary>
