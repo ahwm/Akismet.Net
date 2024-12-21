@@ -1,7 +1,8 @@
 ﻿using Akismet.Net.Attributes;
 using Akismet.Net.Helpers;
-using Newtonsoft.Json;
 using System;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace Akismet.Net
 {
@@ -123,14 +124,14 @@ namespace Akismet.Net
         {
             var attributes = AttributeHelper.GetAttributes(this);
 
-            return JsonConvert.SerializeObject(attributes);
+            return JsonSerializer.Serialize(attributes);
         }
     }
 
     /// <summary>
     /// 
     /// </summary>
-    public class CommentTypeConverter : JsonConverter
+    public class CommentTypeConverter : JsonConverter<AkismentCommentType>
     {
         /// <summary>
         /// 
@@ -142,35 +143,15 @@ namespace Akismet.Net
             return objectType == typeof(AkismentCommentType);
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        public override bool CanRead => false;
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="reader"></param>
-        /// <param name="objectType"></param>
-        /// <param name="existingValue"></param>
-        /// <param name="serializer"></param>
-        /// <returns></returns>
-        /// <exception cref="NotImplementedException"></exception>
-        public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
+        public override AkismentCommentType Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
             throw new NotImplementedException();
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="writer"></param>
-        /// <param name="value"></param>
-        /// <param name="serializer"></param>
-        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
+        public override void Write(Utf8JsonWriter writer, AkismentCommentType value, JsonSerializerOptions options)
         {
             string commentType = (AkismentCommentType)value;
-            writer.WriteValue(commentType);
+            writer.WriteStringValue(commentType);
         }
     }
 }

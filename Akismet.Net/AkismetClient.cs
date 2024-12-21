@@ -1,11 +1,14 @@
 ﻿using Akismet.Net.Helpers;
-using Newtonsoft.Json;
+#if NETSTANDARD
+using Microsoft.Extensions.Options;
+#endif
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Reflection;
+using System.Text.Json;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
@@ -22,6 +25,7 @@ namespace Akismet.Net
 
         private readonly HttpClient client;
 
+#if !NETSTANDARD
         /// <summary>
         /// 
         /// </summary>
@@ -35,10 +39,25 @@ namespace Akismet.Net
 
             client = new HttpClient()
             {
-                BaseAddress = new Uri($"https://{apiKey}.rest.akismet.com/1.1"),
+                BaseAddress = new Uri($"https://{apiKey}.rest.akismet.com/1.1/"),
             };
-            client.DefaultRequestHeaders.UserAgent.Add(new ProductInfoHeaderValue($"{applicationName} | Akismet.NET/{Assembly.GetExecutingAssembly().GetName().Version} (https://github.com/ahwm/Akismet.Net)"));
+            client.DefaultRequestHeaders.Add("User-Agent", $"{applicationName} | Akismet.NET/{Assembly.GetExecutingAssembly().GetName().Version} (https://github.com/ahwm/Akismet.Net)");
         }
+#else
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="apiKey"></param>
+        /// <param name="blogUrl"></param>
+        /// <param name="applicationName"></param>
+        public AkismetClient(HttpClient _httpClient, IOptions<AkismetClientOptions> options)
+        {
+            this.apiKey = options.Value.Key;
+            this.blogUrl = options.Value.BlogUrl;
+
+            client = _httpClient;
+        }
+#endif
 
         /// <summary>
         /// Verify key
@@ -173,12 +192,13 @@ namespace Akismet.Net
         /// <returns></returns>
         public async Task<AkismetAccount> GetAccountStatusAsync()
         {
-            var req = new RestRequest("get-subscription", Method.POST)
-                .AddParameter("key", apiKey)
-                .AddParameter("blog", blogUrl);
-
-            var resp = await client.ExecuteAsync(req);
-            dynamic data = JsonConvert.DeserializeObject(resp.Content);
+            var formData = new FormUrlEncodedContent(new List<KeyValuePair<string, string>>
+            {
+                new KeyValuePair<string, string>("key", apiKey),
+                new KeyValuePair<string, string>("blog", blogUrl)
+            });
+            var resp = await client.PostAsync("get-subscription", formData);
+            var data = JsonSerializer.Deserialize<Dictionary<string, object>>(await resp.Content.ReadAsStringAsync());
 
             AkismetAccount account = new AkismetAccount
             {
@@ -204,17 +224,18 @@ namespace Akismet.Net
             if (!String.IsNullOrWhiteSpace(interval) && !allowedIntervals.Contains(interval))
                 throw new ArgumentException("Invalid interval", nameof(interval));
 
-            var req = new RestRequest("get-stats", Method.POST)
-                .AddParameter("key", apiKey)
-                .AddParameter("blog", blogUrl);
-
+            var data = new List<KeyValuePair<string, string>>
+            {
+                new KeyValuePair<string, string>("key", apiKey),
+                new KeyValuePair<string, string>("blog", blogUrl)
+            };
             if (!String.IsNullOrWhiteSpace(interval))
-                req.AddParameter("from", interval);
+                data.Add(new KeyValuePair<string, string>("from", interval));
+            var resp = await client.PostAsync("get-stats", new FormUrlEncodedContent(data));
 
-            var resp = await client.ExecuteAsync(req);
-            var data = JsonConvert.DeserializeObject<SpamStats>(resp.Content);
+            var stats = JsonSerializer.Deserialize<SpamStats>(await resp.Content.ReadAsStringAsync());
 
-            return data;
+            return stats;
         }
 
         /// <summary>
@@ -250,5 +271,11 @@ namespace Akismet.Net
 
             return await resp.Content.ReadAsStringAsync();
         }
+    }
+
+    public class AkismetClientOptions
+    {
+        public string Key { get; set; } = "";
+        public string BlogUrl { get; set; } = "";
     }
 }
