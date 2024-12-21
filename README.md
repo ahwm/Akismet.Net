@@ -87,3 +87,10 @@ var akismetResult = await akismetClient.CheckAsync(comment)
 If `HoneypotFieldName` and `HoneypotFieldValue` are supplied then the library will add these two values to the request:
 
 `honeypot_field_name=honeypot&honeypot=blah`
+
+#### ⚠️Breaking Changes
+
+Version 4.0 has a breaking change:
+
+- Dropped RestClient in favor of HttpClient directly
+- .NET Core/.NET 5+ now utilize dependency injection
