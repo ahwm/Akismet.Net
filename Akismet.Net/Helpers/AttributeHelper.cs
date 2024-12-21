@@ -1,5 +1,4 @@
 ﻿using Akismet.Net.Attributes;
-using RestSharp.Extensions;
 using System.Collections.Generic;
 using System.Reflection;
 
@@ -25,7 +24,7 @@ namespace Akismet.Net.Helpers
                     }
                     else
                     {
-                        if (property.GetAttribute<AkismetNameAttribute>() is AkismetNameAttribute attribute)
+                        if (property.GetCustomAttribute(typeof(AkismetNameAttribute)) is AkismetNameAttribute attribute)
                             l.Add(new KeyValuePair<string, string>(attribute.AkismetName, property.GetValue(model).ToString()));
                         else
                             l.Add(new KeyValuePair<string, string>(property.Name, property.GetValue(model).ToString()));

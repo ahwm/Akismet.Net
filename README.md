@@ -42,7 +42,7 @@ AkismetComment comment = new AkismetComment
     HoneypotFieldValue = "blah"
 };
 
-var akismetResult = akismet.Check(comment);
+var akismetResult = await akismet.CheckAsync(comment);
 bool isSpam = akismetResult.SpamStatus == SpamStatus.Spam; // Options: Ham, Spam, Unspecified (in the case of an error)
 
 // "invalid" and/or combination of X-akismet-alert-code and X-akismet-alert-msg header values
@@ -56,7 +56,20 @@ foreach (string err in akismetResult.Errors)
 
 ### .NET Core/.NET 5+ Usage Modifications
 
+#### Program.cs / Startup.cs
+
+```charp
+builder.Services.AddAkismet(
+    configuration.ApiKey,
+    configuration.AkismetApplicationName,
+    configuration.BlogUrl);
+```
+
+#### Service Class / Controller
+
 ```csharp
+public class ContactFormController(AkismetClient akismetClient)
+
 string ip = Request.Headers["CF-Connecting-IP"].ToString() ?? _contextAccessor.HttpContext?.Connection.RemoteIpAddress?.ToString() ?? "";
 if (String.IsNullOrWhiteSpace(ip))
     ip = _contextAccessor.HttpContext?.GetServerVariable("REMOTE_HOST") ?? "";
@@ -66,6 +79,7 @@ AkismetComment comment = new AkismetComment
     UserAgent = Request.Headers[HeaderNames.UserAgent],
     Referrer = Request.Headers[HeaderNames.Referer]
 };
+var akismetResult = await akismetClient.CheckAsync(comment)
 ```
 
 ### Notes
@@ -73,3 +87,10 @@ AkismetComment comment = new AkismetComment
 If `HoneypotFieldName` and `HoneypotFieldValue` are supplied then the library will add these two values to the request:
 
 `honeypot_field_name=honeypot&honeypot=blah`
+
+#### ⚠️Breaking Changes
+
+Version 4.0 has a breaking change:
+
+- Dropped RestClient in favor of HttpClient directly
+- .NET Core/.NET 5+ now utilize dependency injection
