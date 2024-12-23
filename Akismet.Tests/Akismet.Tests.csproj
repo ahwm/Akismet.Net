@@ -24,7 +24,7 @@
 		</PackageReference>
 		<ProjectReference Include="../Akismet.Net/Akismet.Net.csproj" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.0" />
-    <PackageReference Include="Xunit.DependencyInjection" Version="9.7.0" />
+    <PackageReference Include="Xunit.DependencyInjection" Version="9.7.1" />
 	</ItemGroup>
 
 </Project>
