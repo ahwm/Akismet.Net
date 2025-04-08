@@ -23,7 +23,7 @@
 			<PrivateAssets>all</PrivateAssets>
 		</PackageReference>
 		<ProjectReference Include="../Akismet.Net/Akismet.Net.csproj" />
-    <PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.2" />
     <PackageReference Include="Xunit.DependencyInjection" Version="9.7.1" />
 	</ItemGroup>
 
