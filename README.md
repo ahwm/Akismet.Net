@@ -19,9 +19,10 @@ var model = new ContactModel();
 string ip = Request.Headers["CF-Connecting-IP"] ?? Request.UserHostAddress;
 if (String.IsNullOrWhiteSpace(ip))
     ip = Request.ServerVariables["REMOTE_HOST"];
-AkismetClient akismet = new AkismetClient("apikeyhere", new Uri("https://www.adamh.us"), "Application Name");
+AkismetClient akismet = new AkismetClient("apikeyhere", "Application Name");
 AkismetComment comment = new AkismetComment
 {
+    BlogUrl = "https://www.adamh.us",
     CommentAuthor = model.Name,
     CommentAuthorEmail = model.EmailAddress,
     CommentAuthorUrl = "http://www.spamwebsite.com",
@@ -61,8 +62,7 @@ foreach (string err in akismetResult.Errors)
 ```charp
 builder.Services.AddAkismet(
     configuration.ApiKey,
-    configuration.AkismetApplicationName,
-    configuration.BlogUrl);
+    configuration.AkismetApplicationName);
 ```
 
 #### Service Class / Controller

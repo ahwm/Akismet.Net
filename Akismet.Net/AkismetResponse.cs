@@ -27,6 +27,11 @@ namespace Akismet.Net
         /// Value of X-akismet-debug-help header, if present
         /// </summary>
         public string AkismetDebugHelp { get; set; }
+
+        /// <summary>
+        /// Value of X-akismet-recheck-after header, if present. Indicates the number of seconds after which the comment should be rechecked with the added parameter of recheck_reason=recheck.
+        /// </summary>
+        public int? RecheckAfter { get; set; }
     }
 
     /// <summary>

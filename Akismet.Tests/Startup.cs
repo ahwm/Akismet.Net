@@ -10,8 +10,7 @@ namespace Akismet.Tests
         public void ConfigureServices(IServiceCollection services)
         {
             string apiKey = Environment.GetEnvironmentVariable("AKISMET_API_KEY").Trim();
-            string blogUrl = Environment.GetEnvironmentVariable("AKISMET_API_KEY_URL").Trim();
-            services.AddAkismet(apiKey, "Akismet Test Application", blogUrl);
+            services.AddAkismet(apiKey, "Akismet Test Application");
         }
     }
 }
