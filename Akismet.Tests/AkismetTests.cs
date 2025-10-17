@@ -8,7 +8,7 @@ namespace Akismet.Tests
 {
     public class AkismetTests
     {
-        private readonly string ApiKeyUrl;
+        private readonly string ApiKeyUrl = Environment.GetEnvironmentVariable("AKISMET_API_KEY_URL").Trim();
         private readonly AkismetClient Client;
 #if NETCORE
         public AkismetTests(AkismetClient akismetClient)
@@ -21,16 +21,15 @@ namespace Akismet.Tests
         public AkismetTests()
         {
             ApiKey = Environment.GetEnvironmentVariable("AKISMET_API_KEY").Trim();
-            ApiKeyUrl = Environment.GetEnvironmentVariable("AKISMET_API_KEY_URL").Trim();
 
-            Client = new AkismetClient(ApiKey, new Uri(ApiKeyUrl), "Akismet Test Application");
+            Client = new AkismetClient(ApiKey, "Akismet Test Application");
         }
 #endif
 
         [Fact]
         public async Task VerifyKeyAsyncTest()
         {
-            var isValid = await Client.VerifyKeyAsync();
+            var isValid = await Client.VerifyKeyAsync(ApiKeyUrl);
 
             isValid.ShouldBe(true);
         }
@@ -40,6 +39,7 @@ namespace Akismet.Tests
         {
             AkismetComment comment = new AkismetComment
             {
+                BlogUrl = ApiKeyUrl,
                 CommentAuthor = "viagra-test-123",
                 CommentAuthorEmail = "akismet-guaranteed-spam@example.com",
                 CommentAuthorUrl = "http://www.spamwebsite.com",
@@ -63,6 +63,7 @@ namespace Akismet.Tests
         {
             AkismetComment comment = new AkismetComment
             {
+                BlogUrl = ApiKeyUrl,
                 CommentAuthor = "Test",
                 CommentAuthorEmail = "test@example.com",
                 CommentAuthorUrl = "http://www.spamwebsite.com",

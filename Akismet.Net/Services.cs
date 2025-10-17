@@ -15,17 +15,16 @@ namespace Akismet.Net
         /// <param name="username"></param>
         /// <param name="test"></param>
         /// <returns></returns>
-        public static IServiceCollection AddAkismet(this IServiceCollection services, string key, string applicationName, string blogUrl)
+        public static IServiceCollection AddAkismet(this IServiceCollection services, string key, string applicationName)
         {
             // https://stackoverflow.com/a/79111722/1892993
             services.AddOptions<AkismetClientOptions>()
                 .Configure(options => {
                     options.Key = key;
-                    options.BlogUrl = blogUrl;
                 });
             services.AddHttpClient<AkismetClient>(client =>
             {
-                client.BaseAddress = new Uri($"https://{key}.rest.akismet.com/1.1/");
+                client.BaseAddress = new Uri("https://rest.akismet.com/");
                 client.DefaultRequestHeaders.Add("User-Agent", $"{applicationName} | Akismet.NET/{Assembly.GetExecutingAssembly().GetName().Version} (https://github.com/ahwm/Akismet.Net)");
             });
 

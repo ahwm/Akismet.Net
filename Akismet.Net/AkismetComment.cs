@@ -12,6 +12,12 @@ namespace Akismet.Net
     public class AkismetComment
     {
         /// <summary>
+        /// The front page or home URL of the instance making the request. For a blog or wiki this would be the front page. Note: Must be a full URI, including http://.
+        /// </summary>
+        [AkismetName("blog")]
+        public string BlogUrl { get; set; }
+
+        /// <summary>
         /// IP address of the comment submitter.
         /// </summary>
         [AkismetName("user_ip")]
