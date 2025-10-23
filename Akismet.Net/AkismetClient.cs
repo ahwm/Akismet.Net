@@ -29,7 +29,6 @@ namespace Akismet.Net
         /// 
         /// </summary>
         /// <param name="apiKey"></param>
-        /// <param name="blogUrl"></param>
         /// <param name="applicationName"></param>
         public AkismetClient(string apiKey, string applicationName)
         {
@@ -45,9 +44,8 @@ namespace Akismet.Net
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="apiKey"></param>
-        /// <param name="blogUrl"></param>
-        /// <param name="applicationName"></param>
+        /// <param name="_httpClient"></param>
+        /// <param name="options"></param>
         public AkismetClient(HttpClient _httpClient, IOptions<AkismetClientOptions> options)
         {
             this.apiKey = options.Value.Key;
@@ -175,6 +173,7 @@ namespace Akismet.Net
         /// <summary>
         /// 
         /// </summary>
+        /// <param name="blogUrl"></param>
         /// <param name="interval">Allowed options: 60-days, 6-months, all</param>
         /// <returns></returns>
         public async Task<SpamStats> GetStatisticsAsync(string blogUrl, string interval = "")
@@ -289,8 +288,14 @@ namespace Akismet.Net
         }
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
     public class AkismetClientOptions
     {
+        /// <summary>
+        /// 
+        /// </summary>
         public string Key { get; set; } = "";
     }
 }
